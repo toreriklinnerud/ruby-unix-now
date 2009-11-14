@@ -1,19 +1,19 @@
 # run | Ruby Unix Now
-A tiny library which attempts to bridge the gap between ruby code and executing system commands. Nore more string concatenation to build up commands. 
+A tiny library which attempts to bridge the gap between ruby code and executing system commands. No more more string concatenation to build up commands. 
 
-The simplest way to execute a command in ruby is to embed your command in backstring. 
+The simplest way to execute a command in ruby is to embed your command in backticks. 
 
-  `whoami` #=> john
+    `whoami` #=> john
 
 So far, so good. Using run, the equivalent command would be 
-  run :whoami
+    run :whoami
   
 Not much difference. However, as soon as we start to introduce arguments, conditional logic and so on, string concatenation and backticks starts to get ugly.
 
-  command = "rsync -r, --progress"
-  command << " -z -h " if condition_x
-  command << " --from #{from_path} --to #{to_path}"
-  `#{command}`
+    command = "rsync -r, --progress"
+    command << " -z -h " if condition_x
+    command << " --from #{from_path} --to #{to_path}"
+    `#{command}`
   
 Run tries to solve these problems my making it easy to
 
@@ -30,9 +30,9 @@ It does this just by assigning meaning to the standard Ruby structures.
 
 The equivalent run command to the one above would be
 
-  options = {}
-  options.merge!(:z, :h) if condition_x_
-  run :rsync, :r, :progress, options, --from from_path, --to to_path
+    options = {}
+    options.merge!(:z, :h) if condition_x_
+    run :rsync, :r, :progress, options, --from from_path, --to to_path
   
 Nore more embedding variables in string, no more arbitrary spaces to make 
 strings glue together correctly.
@@ -41,9 +41,9 @@ Another example taken from a real life script
 
 Normal commands
   
-  `mkdir -p #{xapian_path}`
-  `rm -r -f #{to`
-  `cp -r, #{from} #{to}`
+    `mkdir -p #{xapian_path}`
+    `rm -r -f #{to`
+    `cp -r, #{from} #{to}`
   
 With Run
 
@@ -64,6 +64,6 @@ Run will by default raise an exception, but you can also configure it to exit wi
 
 ## More examples
 
-  psql =  ['psql', :d, source['database'], auth]
+  psql = ['psql', :d, source['database'], auth]
   input = ['pg_dump', :i, auth, '--data-only', :table,'xapian_texts', config['database']]
-  run  input, '|', psql
+  run input, '|', psql
