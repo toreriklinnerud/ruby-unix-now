@@ -51,16 +51,7 @@ With Run
     run :rm, :r, :f, to
     run :cp, :r, from, to
 
-Run also helps you along with some other common scenarios, such as aborting on error and echoing commands as they are executed. 
-
-If we want to check that the backtick command ran successfully, we have to add more code
-
-    unless $?.success?
-      'Ohoh'
-      exit -1
-    end
-  
-Run will by default raise an exception, but you can also configure it to exit with an error message.
+Run also helps you along with some other common scenarios, such as aborting on error and echoing commands as they are executed.
 
 ## More examples
 
