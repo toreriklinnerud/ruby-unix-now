@@ -32,7 +32,7 @@ The equivalent run command to the one above would be
 
     options = {}
     options.merge!(:z, :h) if condition_x_
-    run :rsync, :r, :progress, options, --from from_path, --to to_path
+    run :rsync, :r, :progress, options, :from => from_path, :to => to_path
   
 Nore more embedding variables in string, no more arbitrary spaces to make 
 strings glue together correctly.
@@ -45,7 +45,7 @@ Normal commands
     `rm -r -f #{to`
     `cp -r, #{from} #{to}`
   
-With Run
+With run
 
     run :mkdir, :p, xapian_path
     run :rm, :r, :f, to
