@@ -4,10 +4,11 @@ def log(msg, level = 0)
 end
 
 def run(*arguments)
-  options = (arguments.last.is_a?(Hash) && arguments.pop) || {}
+  options = (arguments.last.is_a?(Hash) && arguments.last) || {}
+  sync = options.delete(:sync)
   cmd = expand_cmd(*arguments)
   log(cmd)
-  result = if options[:sync]
+  result = if sync
     `#{cmd}`
   else
     system(cmd)
@@ -20,7 +21,7 @@ end
 
 def expand_cmd(*arguments)
   command = arguments.shift.to_s
-  cmd = command + ' ' + arguments.map{|a| a.to_cmd_opt}.join(' ')
+  cmd = command + ' ' + arguments.map{|a| a.respond_to?(:to_cmd_opt) ? a.to_cmd_opt : a.to_s}.join(' ')
 end
 
 class Symbol
@@ -36,19 +37,13 @@ end
 
 class Array
   def to_cmd_opt
-    map{|a| a.to_cmd_opt}.join(' ')
-  end
-end
-
-class String
-  def to_cmd_opt
-    self
+    map{|a| a.respond_to?(:to_cmd_opt) ? a.to_cmd_opt : a.to_s}.join(' ')
   end
 end
 
 class Hash
   def to_cmd_opt(style = :gnu)
-    map do |key, value| 
+    map do |key, value|
       prefix = ((style == :gnu && key.to_s.size > 1) ? '--' : '-')
       assignment = (key.to_s.size == 1 || style == :unix) ? ' ' : '='
       value.is_a?(TrueClass) ? "#{prefix}#{key}" : "#{prefix}#{key}#{assignment}#{value}"
